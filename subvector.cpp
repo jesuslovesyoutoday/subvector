@@ -1,47 +1,60 @@
+#ifndef SUBVECTOR_IS_DEFINED
+#define SUBVECTOR_IS_DEFINED
+
 #include <iostream>
 
-struct subvector {
-    int *mas;                  //указатель на начало массива
-    unsigned int top;          //размер массива (осознанные данные)
-    unsigned int capacity;     //размер выделенной памяти
+class subvector 
+{
+    public:
+	subvector();
+	bool push_back(int d);
+	int pop_back();
+	bool resize(unsigned int new_capacity);
+	void shrink_to_fit();
+	void clear();
+	~subvector();
+	void print_subvector();
+	void unit_test();
+
+    private:
+	int *mas;                  //указатель на начало массива
+    	unsigned int top;          //размер массива (осознанные данные)
+    	unsigned int capacity;     //размер выделенной памяти
 };
 
-
-bool init(subvector *qv) //инициализирует пустой недовектор
+subvector::subvector() //инициализирует пустой недовектор
 {
-    qv->mas = NULL;
-    qv->top = 0;
-    qv->capacity = 0;
+    this->mas = NULL;
+    this->top = 0;
+    this->capacity = 0;
+}; 
 
-    return 1;
-};
-
-bool push_back(subvector *qv, int d) //добавляет элемент в конец недовектора
+bool subvector::push_back(int d) //добавляет элемент в конец недовектора
 {
-    if ( qv->top >= qv->capacity )
+    if ( this->top >= this->capacity )
     {
-        int *p = new int [(qv->capacity)+10];
-	if ((qv->mas)!=NULL)
+        int *p = new int [(this->capacity)+10];
+	if ((this->mas)!=NULL)
 	{
-        	for ( int i = 0; i < qv->top; i++ )
+        	for ( int i = 0; i < this->top; i++ )
         	{
-            	p[i] = qv->mas[i];
+            	p[i] = this->mas[i];
         	}
   	}	
-        delete[] qv->mas;
-        qv->mas = p;
-        qv->capacity += 10;
+        delete[] this->mas;
+        this->mas = p;
+        this->capacity += 10;
     }
     
-    qv->mas[qv->top] = d;
+    this->mas[this->top] = d;
 
-    //std::cout << qv->top << "-----"  << qv->mas[qv->top] << std::endl;
+    //std::cout << this->top << "-----"  << this->mas[this->top] << std::endl;
     
-    qv->top += 1;
+    this->top += 1;
     
-    // std::cout << "Overflow len = " << qv->top << '\n';
+    // std::cout << "Overflow len = " << this->top << '\n';
 
-    if (qv->mas[qv->top-1] == d)
+    if (this->mas[this->top-1] == d)
     {
         return 1;
     }
@@ -52,26 +65,26 @@ bool push_back(subvector *qv, int d) //добавляет элемент в ко
     }
 };
 
-int pop_back(subvector *qv) //удаляет элемент с конца недовектора
+int subvector::pop_back() //удаляет элемент с конца недовектора
 {
     /*
-    int *p = new int[qv->capacity]; --------- создает новый массив
-    int a = qv->mas[qv->top];
-    for ( int i = 0; i < qv->top; i ++)
+    int *p = new int[this->capacity]; --------- создает новый массив
+    int a = this->mas[qv->top];
+    for ( int i = 0; i < this->top; i ++)
     {
-        p[i] = qv->mas[i];
+        p[i] = this->mas[i];
     }
-    delete[] qv->mas;
-    qv->mas = p;
-    qv->top -= 1;
+    delete[] this->mas;
+    this->mas = p;
+    this->top -= 1;
     return a;
     */
     
-    if ((qv->top)>0 & (qv->mas)!=NULL)
+    if ((this->top)>0 & (this->mas)!=NULL)
     {
-	int curr = qv->mas[qv->top - 1]; 
-    	qv->mas[qv->top - 1] = 0;
-    	--(qv->top);
+	int curr = this->mas[this->top - 1]; 
+    	this->mas[this->top - 1] = 0;
+    	--(this->top);
 	return curr;
     }
     else
@@ -80,18 +93,18 @@ int pop_back(subvector *qv) //удаляет элемент с конца нед
     }
 };
 
-bool resize(subvector *qv, unsigned int new_capacity) //увеличивает емкость недовектора
+bool subvector::resize(unsigned int new_capacity) //увеличивает емкость недовектора
 {
     int *p = new int[new_capacity];
-    for ( int i = 0; i < qv->top; i ++ )
+    for ( int i = 0; i < this->top; i ++ )
     {
-        p[i] = qv->mas[i];
+        p[i] = this->mas[i];
     }
-    delete[] qv->mas;
-    qv->mas = p;
-    qv->capacity = new_capacity;
+    delete[] this->mas;
+    this->mas = p;
+    this->capacity = new_capacity;
 
-    if (qv->capacity == new_capacity)
+    if (this->capacity == new_capacity)
     {
         return 1;
     }
@@ -101,39 +114,83 @@ bool resize(subvector *qv, unsigned int new_capacity) //увеличивает �
     }
 };
 
-void shrink_to_fit(subvector *qv) //очищает неиспользуемую память
+void subvector::shrink_to_fit() //очищает неиспользуемую память
 {
-    int *p = new int[qv->top];
-    for ( int i = 0; i < qv->top; i++ )
+    int *p = new int[this->top];
+    for ( int i = 0; i < this->top; i++ )
     {
-        p[i] = qv->mas[i];
+        p[i] = this->mas[i];
     }
-    delete[] qv->mas;
-    qv->mas = p;
-    qv->capacity = 0;
+    delete[] this->mas;
+    this->mas = p;
+    this->capacity = 0;
 };
 
-void clear(subvector *qv) //очищает содержимое недовектора
+void subvector::clear() //очищает содержимое недовектора
 {
-    int *p = new int[qv->capacity];
-    delete[] qv->mas;
-    qv->mas = p;
-    qv->top = 0;
+    int *p = new int[this->capacity];
+    delete[] this->mas;
+    this->mas = p;
+    this->top = 0;
 };
 
-void destructor(subvector *qv)  //очищает всю используемую память, инициализирует недовектор как пустой
+subvector::~subvector()  //очищает всю используемую память
 {
-    delete[] qv->mas;
-    
-    init(qv);
+    delete[] this->mas;
 };
 
-void print_subvector(subvector *vec)
+void subvector::print_subvector()
 {
-    for ( int i = 0; i < vec->top; i ++ )
+    for ( int i = 0; i < this->top; i ++ )
     {
-        std::cout << vec->mas[i] << ", ";
+        std::cout << this->mas[i] << ", ";
     }
 
     std::cout << std::endl;
 } 
+
+void subvector::unit_test()
+{
+	int k = 0;
+
+	this->push_back(1);
+	this->push_back(2);
+	this->push_back(3);
+	
+	if(this->pop_back()!=3)
+	{
+		std::cout << "push-pop test failed" << std::endl;
+		k++;
+	}
+	
+	this->push_back(3);
+	this->resize(20);
+
+	if(this->capacity!=20)
+	{
+		std::cout << "resize test failed" << std::endl;
+		k++;
+	}
+	
+	this->shrink_to_fit();
+
+	if(this->capacity!=0)
+	{
+		std::cout << "fit test failed" << std::endl;
+		k++;
+	}
+
+	this->clear();
+
+	if(this->top != 0)
+	{
+		std::cout << "clear test failed" << std::endl;
+		k++;
+	}
+
+	if(k==0)
+	{
+		std::cout << "All tests passed" << std::endl;
+	}
+}
+#endif // SUBVECTOR_IS_DEFINED
