@@ -8,6 +8,7 @@ class subvector
     public:
 	subvector();
 	bool push_back(int d);
+	bool insert(int data, int place);
 	int pop_back();
 	bool resize(unsigned int new_capacity);
 	void shrink_to_fit();
@@ -28,6 +29,40 @@ subvector::subvector() //инициализирует пустой недове�
     this->top = 0;
     this->capacity = 0;
 }; 
+
+bool subvector::insert(int data, int place) //добавляет элемент в произвольное место недовектора
+{
+	int *p = new int [(this->capacity) + 1];
+	
+	int i;
+	
+	for (i = 0; i < place; i++ )
+	{
+		p[i] = this->mas[i];
+	} 
+	
+	p[i] = data;
+	
+	for (i = i + 1; i < this->top + 1; i ++)
+	{
+		p[i] = this->mas[i-1];
+	}
+	
+	this->top ++;
+	delete [] this->mas;
+	this->mas = p;
+	this->capacity ++;
+	
+	if (this->mas[place] == data)
+	{
+		return true;
+	}
+	
+	else 
+	{
+		return false;
+	}
+}
 
 bool subvector::push_back(int d) //добавляет элемент в конец недовектора
 {
