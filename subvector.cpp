@@ -10,6 +10,7 @@ class subvector
 	bool push_back(int d);
 	bool insert(int data, int place);
 	int erase(int place);
+	int get_element(int place);
 	int pop_back();
 	bool resize(unsigned int new_capacity);
 	void shrink_to_fit();
@@ -85,6 +86,11 @@ int subvector::erase(int place)
 	delete [] this->mas;
 	this->mas = p;
 	return a;
+}
+
+int subvector::get_element(int place)
+{
+	return this->mas[place];
 }
 
 bool subvector::push_back(int d) //добавляет элемент в конец недовектора
